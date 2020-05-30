@@ -189,6 +189,11 @@ static struct perf_stat_config stat_config = {
 	.big_num		= true,
 };
 
+/* Yu Yan
+ */
+int num_pid_tid = 0;
+struct pid_tid *pid_array;
+
 static inline void diff_timespec(struct timespec *r, struct timespec *a,
 				 struct timespec *b)
 {

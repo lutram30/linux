@@ -54,9 +54,9 @@ endif
 
 # Set compile option CFLAGS
 ifdef EXTRA_CFLAGS
-  CFLAGS := $(EXTRA_CFLAGS)
+  CFLAGS := $(EXTRA_CFLAGS) -ggdb -O0
 else
-  CFLAGS := -g -Wall
+  CFLAGS := -ggdb -O0 -Wall
 endif
 
 INCLUDES = \

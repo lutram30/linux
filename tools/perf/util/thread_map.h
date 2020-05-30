@@ -7,6 +7,15 @@
 #include <linux/refcount.h>
 #include <internal/threadmap.h>
 #include <perf/threadmap.h>
+/* Yu Yan
+ */
+struct pid_tid {
+    pid_t pid;
+    int numtids;
+    pid_t *tids;
+};
+extern struct pid_tid *pid_array;
+extern int num_pid_tid;
 
 struct perf_record_thread_map;
 

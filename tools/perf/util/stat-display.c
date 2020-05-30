@@ -21,6 +21,8 @@
 #define CNTR_NOT_SUPPORTED	"<not supported>"
 #define CNTR_NOT_COUNTED	"<not counted>"
 
+static void print_pid_tid(struct perf_stat_config *);
+
 static void print_running(struct perf_stat_config *config,
 			  u64 run, u64 ena)
 {
@@ -1030,6 +1032,10 @@ static void print_header(struct perf_stat_config *config,
 
 	fflush(stdout);
 
+    /* Yu Yan
+     */
+    print_pid_tid(config);
+
 	if (!config->csv_output) {
 		fprintf(output, "\n");
 		fprintf(output, " Performance counter stats for ");
@@ -1259,4 +1265,27 @@ perf_evlist__print_counters(struct evlist *evlist,
 		print_footer(config);
 
 	fflush(config->output);
+}
+
+static void
+print_pid_tid(struct perf_stat_config *config)
+{
+    FILE *output = config->output;
+    int i;
+
+    if (config->aggr_mode != AGGR_THREAD)
+        return;
+
+    fprintf(output, "\n Aggregate threads per pid:\n");
+    fputs("\n", output);
+
+    for (i = 0; i < num_pid_tid; i++) {
+        int n;
+
+        fprintf(output, "  PID: %d ", pid_array[i].pid);
+        fprintf(output, "Threads: ");
+        for (n = 0; n < pid_array[i].numtids; n++)
+            fprintf(output, "%d ", pid_array[i].tids[n]);
+        fputs("\n", output);
+    }
 }

@@ -28,11 +28,11 @@ ifeq ($(DEBUG),0)
 endif
 
 ifeq ($(DEBUG),1)
-  CFLAGS += -O0
+  CFLAGS += -O0 -ggdb
 else ifeq ($(CC_NO_CLANG), 0)
-  CFLAGS += -O3
+  CFLAGS += -O0 -ggdb
 else
-  CFLAGS += -O6
+  CFLAGS += -O0 -ggdb
 endif
 
 # Treat warnings as errors unless directed not to
