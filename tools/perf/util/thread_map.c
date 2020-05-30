@@ -190,18 +190,9 @@ static struct perf_thread_map *thread_map__new_by_pid_str(const char *pid_str)
 	struct str_node *pos;
 	struct strlist_config slist_config = { .dont_dupstr = true, };
 	struct strlist *slist = strlist__new(pid_str, &slist_config);
-    int n;
 
 	if (!slist)
 		return NULL;
-
-    n = 0;
-    {
-        /* Yu Yan
-         */
-        pid_array = calloc(slist->rblist.nr_entries, sizeof(struct pid_tid));
-        num_pid_tid = slist->rblist.nr_entries;
-    }
 
 	strlist__for_each_entry(pos, slist) {
 		pid = strtol(pos->s, &end_ptr, 10);
@@ -212,11 +203,6 @@ static struct perf_thread_map *thread_map__new_by_pid_str(const char *pid_str)
 
 		if (pid == prev_pid)
 			continue;
-
-        { /* Yu Yan
-           */
-            pid_array[n].pid = pid;
-        }
 
 		sprintf(name, "/proc/%d/task", pid);
 		items = scandir(name, &namelist, filter, NULL);
@@ -230,23 +216,12 @@ static struct perf_thread_map *thread_map__new_by_pid_str(const char *pid_str)
 
 		threads = nt;
 
-        {
-            /* Yu Yan
-             */
-            pid_array[n].tids = calloc(items, sizeof(pid_t));
-            pid_array[n].numtids = items;
-        }
-
 		for (i = 0; i < items; i++) {
 			perf_thread_map__set_pid(threads, j++, atoi(namelist[i]->d_name));
-            pid_array[n].tids[i] = atoi(namelist[i]->d_name);
 			zfree(&namelist[i]);
 		}
 		threads->nr = total_tasks;
 		free(namelist);
-        /* Yu Yan
-         */
-        ++n;
 	}
 
 out:

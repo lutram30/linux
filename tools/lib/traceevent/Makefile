@@ -104,9 +104,9 @@ INCLUDES = -I. -I $(srctree)/tools/include $(CONFIG_INCLUDES)
 
 # Set compile option CFLAGS
 ifdef EXTRA_CFLAGS
-  CFLAGS := $(EXTRA_CFLAGS) -ggdb -O0
+  CFLAGS := $(EXTRA_CFLAGS)
 else
-  CFLAGS := -ggdb -O0 -Wall
+  CFLAGS := -g -Wall
 endif
 
 # Append required CFLAGS
